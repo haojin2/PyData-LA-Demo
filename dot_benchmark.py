@@ -25,8 +25,8 @@ skip_gpu = False if npx.num_gpus() >= 1 else True
 lhs_shape = (2048, 2048)
 rhs_shape = (2048, 4096)
 
-onp_lhs = onp.random.uniform(-1.0, 1.0, size=lhs_shape)
-onp_rhs = onp.random.uniform(-1.0, 1.0, size=rhs_shape)
+onp_lhs = onp.random.uniform(-1.0, 1.0, size=lhs_shape).astype(np.float32)
+onp_rhs = onp.random.uniform(-1.0, 1.0, size=rhs_shape).astype(np.float32)
 onp_start = time.time()
 onp_out = onp.dot(onp_lhs, onp_rhs)
 onp_end = time.time()
@@ -40,8 +40,8 @@ dnp_cpu_end = time.time()
 print("NP on MXNet consumed:", dnp_cpu_end - dnp_cpu_start, "seconds on CPU.")
 
 if not skip_gpu:
-    dnp_gpu_lhs = np.random.uniform(-1.0, 1.0, size=lhs_shape, ctx=npx.gpu(0))
-    dnp_gpu_rhs = np.random.uniform(-1.0, 1.0, size=rhs_shape, ctx=npx.gpu(0))
+    dnp_gpu_lhs = np.random.uniform(-1.0, 1.0, size=lhs_shape).as_in_ctx(npx.gpu(0))
+    dnp_gpu_rhs = np.random.uniform(-1.0, 1.0, size=rhs_shape).as_in_ctx(npx.gpu(0))
     dnp_gpu_start = time.time()
     dnp_gpu_out = np.dot(dnp_gpu_lhs, dnp_gpu_rhs)
     dnp_gpu_end = time.time()
