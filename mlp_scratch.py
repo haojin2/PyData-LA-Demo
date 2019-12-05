@@ -51,7 +51,14 @@ def net(X):
     H = relu(np.dot(X, W1) + b1)
     return np.dot(H, W2) + b2
 
-loss = gluon.loss.SoftmaxCrossEntropyLoss()
+def softmax(y_hat):
+    exps = np.exp(y_hat - np.max(y_hat, axis=1, keepdims=True))
+    return exps / np.sum(exps, axis=1, keepdims=True)
+
+def loss(y_hat, y):
+    m = y.shape[0]
+    p = -np.log(softmax(y_hat))
+    return np.sum(p[range(m), y])
 
 num_epochs, lr, wd = 10, 0.5, 0.001
 def sgd(params, lr, wd, batch_size):
