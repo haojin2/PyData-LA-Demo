@@ -57,8 +57,8 @@ def softmax(y_hat):
 
 def loss(y_hat, y):
     m = y.shape[0]
-    p = -np.log(softmax(y_hat))
-    return np.sum(p[range(m), y])
+    p = softmax(y_hat)
+    return np.sum(-np.log(p[range(m), y]))
 
 num_epochs, lr, wd = 10, 0.5, 0.001
 def sgd(params, lr, wd, batch_size):
